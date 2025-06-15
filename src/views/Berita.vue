@@ -1,6 +1,29 @@
 <script setup>
 import { ref } from "vue";
 
+const slides = ref([
+  "/berita1.jpg",
+  "/berita2.jpg",
+  "/berita3.jpg",
+  "/berita4.jpeg",
+  "/berita5.jpg",
+]);
+
+const current = ref(0);
+
+function next() {
+  current.value = (current.value + 1) % slides.value.length;
+}
+
+function prev() {
+  current.value =
+    (current.value - 1 + slides.value.length) % slides.value.length;
+}
+
+function goTo(index) {
+  current.value = index;
+}
+
 const cards = ref([
   {
     id: 1,
@@ -86,34 +109,114 @@ const cards = ref([
 </script>
 
 <template>
-  <section class="mb-3">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 mt-20">
-      <div
-        class="bg-black z-10 h-auto lg:h-[80vh] col-span-1 lg:col-span-8 p-6 lg:px-56 lg:py-32"
-      >
-        <div class="bg-[#023C8E] w-8 h-2 mb-4"></div>
-        <div class="">
-          <h1 class="text-white text-4xl font-bold mb-4">
-            Skyreach & doctorSHARE Koordinasi untuk Pemasangan VSAT pada RSA
-            Baru
-          </h1>
-          <p class="text-white font-normal">
-            Pada tanggal 10 Januari 2022 kemarin. Tim doctorSHARE melakukan
-            koordinasi dengan pihak @skyreachid untuk pemasangan VSAT pada Rumah
-            Sakit Apung yang baru.
-          </p>
-        </div>
-        <button
-          class="bg-[#023C8E] text-white px-4 py-2 sm:px-6 sm:py-3 font-bold rounded hover:bg-blue-700 mt-5 transition"
+  <section>
+    <div id="default-carousel" class="relative w-full">
+      <!-- Carousel wrapper -->
+      <div class="relative h-auto lg:h-[80vh] overflow-hidden md:h-100">
+        <div
+          v-for="(card, index) in cards"
+          :key="index"
+          :class="[
+            'absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 duration-700 ease-in-out',
+            index === current ? '' : 'hidden',
+          ]"
         >
-          BACA SELENGKAPNYA
-        </button>
+          <!-- <img :src="card.image" alt="carousel slide" /> -->
+          <div
+            class="grid grid-cols-1 h-auto lg:h-[80vh] lg:grid-cols-12 gap-10 mt-20"
+          >
+            <div
+              class="bg-black z-10 col-span-1 lg:col-span-8 p-6 lg:px-56 lg:py-32"
+            >
+              <div class="bg-[#023C8E] w-8 h-2 mb-4"></div>
+              <div class="">
+                <h1 class="text-white text-4xl font-bold mb-4">
+                  {{ card.title }}
+                </h1>
+                <p class="text-white font-normal">
+                  {{ card.description }}
+                </p>
+              </div>
+              <button
+                class="bg-[#023C8E] text-white px-4 py-2 sm:px-6 sm:py-3 font-bold rounded hover:bg-blue-700 mt-5 transition"
+              >
+                BACA SELENGKAPNYA
+              </button>
+            </div>
+            <div
+              class="col-span-1 lg:col-span-4 relative mt-6 lg:mt-10 z-20 p-6 lg:-ml-64"
+            >
+              <img :src="card.image" class="w-full h-64 lg:h-100" alt="" />
+            </div>
+          </div>
+        </div>
       </div>
+
+      <!-- Slider indicators -->
       <div
-        class="col-span-1 lg:col-span-4 relative mt-6 lg:mt-20 z-20 p-6 lg:-ml-64"
+        class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3"
       >
-        <img class="w-full h-64 lg:h-100" src="/berita5.jpg" alt="" />
+        <button
+          v-for="(_, index) in slides"
+          :key="index"
+          :class="[
+            'w-3 h-3 rounded-full',
+            current === index ? 'bg-gray-800' : 'bg-gray-400',
+          ]"
+          @click="goTo(index)"
+        ></button>
       </div>
+
+      <!-- Slider controls -->
+      <button
+        type="button"
+        @click="prev"
+        class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+      >
+        <span
+          class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-gray-400 dark:group-focus:ring-gray-800/70 group-focus:outline-none"
+        >
+          <svg
+            class="w-4 h-4 text-black dark:text-gray-200"
+            viewBox="0 0 6 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 1 1 5l4 4"
+            />
+          </svg>
+        </span>
+      </button>
+
+      <button
+        type="button"
+        @click="next"
+        class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+      >
+        <span
+          class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-gray-400 dark:group-focus:ring-gray-800/70 group-focus:outline-none"
+        >
+          <svg
+            class="w-4 h-4 text-black dark:text-gray-200"
+            viewBox="0 0 6 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m1 9 4-4-4-4"
+            />
+          </svg>
+        </span>
+      </button>
     </div>
   </section>
   <section class="mt-12">

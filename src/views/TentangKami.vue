@@ -33,10 +33,13 @@
     <div class="flex justify-center">
       <div class="bg-[#023C8E] w-8 h-2 mb-4"></div>
     </div>
-    <div class="flex flex-col items-center text-center">
-      <h1 class="text-black text-xl sm:text-3xl lg:text-4xl font-bold mb-8">
+    <div class="flex flex-col items-center text-center mb-8">
+      <h1 class="text-black text-xl sm:text-3xl lg:text-4xl font-bold">
         Contact us
       </h1>
+      <p class="text-black">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. lo
+      </p>
     </div>
     <div class="grid grid-cols-2 gap-8">
       <div

@@ -6,6 +6,8 @@ export default {
   name: "Navbar",
   setup() {
     const isOpen = ref(false);
+    const isOpenIndustri = ref(false);
+    const isOpenBerita = ref(false);
     const isScrolled = ref(false);
     const cards = ref([
       {
@@ -35,6 +37,15 @@ export default {
       },
     ]);
 
+    const industries = ref([
+      { name: "Natural Resources", icon: "/industri-black1.png" },
+      { name: "Maritime & Offshore", icon: "/industri-black2.png" },
+      { name: "Energy", icon: "/industri-black3.png" },
+      { name: "Media", icon: "/industri-black4.png" },
+      { name: "Government", icon: "/industri-black5.png" },
+      { name: "Flight", icon: "/industri-black6.png" },
+    ]);
+
     const handleScroll = () => {
       isScrolled.value = window.scrollY > 20;
     };
@@ -53,9 +64,12 @@ export default {
 
     return {
       isOpen,
+      isOpenBerita,
+      isOpenIndustri,
       isScrolled,
       cards,
       toggleMenu,
+      industries,
     };
   },
 };
@@ -172,12 +186,12 @@ export default {
           <li class="relative">
             <button
               id="mega-menu-full-dropdown-button"
-              data-collapse-toggle="mega-menu-full-dropdown"
+              @click="isOpenBerita = !isOpenBerita"
               class="flex items-center justify-between w-full py-2 px-3 text-white rounded-sm md:w-auto hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700"
             >
               Berita
               <svg
-                class="w-2.5 h-2.5 ms-2.5"
+                class="w-2.5 h-2.5 ml-2.5"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -192,9 +206,13 @@ export default {
                 />
               </svg>
             </button>
+
             <div
               id="mega-menu-full-dropdown"
-              class="hidden absolute top-full left-0 md:left-1/6 transform md:-translate-x-1/6 mt-2 w-full md:w-max border border-gray-200 shadow-lg bg-gray-50 md:bg-white dark:bg-gray-800 dark:border-gray-600 z-40"
+              :class="[
+                'absolute top-full left-0 md:left-1/6 transform md:-translate-x-1/6 mt-2 w-full md:w-max border border-gray-200 shadow-lg bg-gray-50 md:bg-white dark:bg-gray-800 dark:border-gray-600 z-40',
+                isOpenBerita ? '' : 'hidden',
+              ]"
             >
               <div
                 class="grid max-w-screen-xl px-6 py-4 text-gray-900 dark:text-white sm:grid-cols-8 gap-4"
@@ -206,7 +224,7 @@ export default {
                       <a
                         href="#"
                         class="block p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
-                        @click="isOpen = false"
+                        @click="isOpenBerita = false"
                       >
                         <div class="font-normal">Goverment</div>
                       </a>
@@ -215,7 +233,7 @@ export default {
                       <a
                         href="#"
                         class="block p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
-                        @click="isOpen = false"
+                        @click="isOpenBerita = false"
                       >
                         <div class="font-normal">Maritime</div>
                       </a>
@@ -224,13 +242,14 @@ export default {
                       <a
                         href="#"
                         class="block p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
-                        @click="isOpen = false"
+                        @click="isOpenBerita = false"
                       >
                         <div class="font-normal">Energy</div>
                       </a>
                     </li>
                   </ul>
                 </div>
+
                 <div class="col-span-6">
                   <div
                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-10"
@@ -240,7 +259,7 @@ export default {
                       :key="card.id"
                       class="w-full bg-white shadow-sm dark:bg-gray-800 flex flex-col justify-between"
                     >
-                      <a :href="card.link" @click="isOpen = false">
+                      <a :href="card.link" @click="isOpenBerita = false">
                         <img
                           :src="card.image"
                           alt=""
@@ -251,7 +270,7 @@ export default {
                         class="p-6 sm:p-8 flex flex-col justify-between flex-1"
                       >
                         <div>
-                          <a :href="card.link" @click="isOpen = false">
+                          <a :href="card.link" @click="isOpenBerita = false">
                             <h5
                               class="mb-2 text-lg sm:text-xl font-bold tracking-tight text-gray-900 dark:text-gray-100"
                             >
@@ -267,7 +286,7 @@ export default {
                         <RouterLink
                           to="/berita"
                           class="inline-flex items-center text-sm font-semibold text-[#023C8E] mt-4 group"
-                          @click="isOpen = false"
+                          @click="isOpenBerita = false"
                         >
                           Selengkapnya
                           <svg
@@ -302,64 +321,58 @@ export default {
             >
           </li>
           <li>
-            <button
-              id="dropdownNavbarLink"
-              data-dropdown-toggle="dropdownNavbar"
-              class="flex items-center justify-between w-full py-2 px-3 text-white hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
-            >
-              Industri
-              <svg
-                class="w-2.5 h-2.5 ml-2.5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 10 6"
+            <div class="relative">
+              <button
+                @click="isOpenIndustri = !isOpenIndustri"
+                id="dropdownNavbarLink"
+                data-dropdown-toggle="dropdownNavbar"
+                class="flex items-center justify-between w-full py-2 px-3 text-white hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
               >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="m1 1 4 4 4-4"
-                />
-              </svg>
-            </button>
-            <div
-              id="dropdownNavbar"
-              class="z-10 hidden font-normal bg-white divide-y divide-gray-700 p-5 shadow-sm w-72 dark:bg-gray-700 dark:divide-gray-600"
-            >
-              <ul
-                class="py-2 text-sm text-gray-700 dark:text-gray-400"
-                aria-labelledby="dropdownNavbarLink"
-              >
-                <li
-                  v-for="industry in [
-                    { name: 'Natural Resources', icon: '/industri-black1.png' },
-                    {
-                      name: 'Maritime & Offshore',
-                      icon: '/industri-black2.png',
-                    },
-                    { name: 'Energy', icon: '/industri-black3.png' },
-                    { name: 'Media', icon: '/industri-black4.png' },
-                    { name: 'Government', icon: '/industri-black5.png' },
-                    { name: 'Flight', icon: '/industri-black6.png' },
-                  ]"
-                  :key="industry.name"
+                Industri
+                <svg
+                  class="w-2.5 h-2.5 ml-2.5"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
                 >
-                  <RouterLink
-                    to="/industri"
-                    class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-                    @click="isOpen = false"
-                  >
-                    <img
-                      class="w-10 h-10"
-                      :src="industry.icon"
-                      :alt="industry.name"
-                    />
-                    <div class="font-semibold">{{ industry.name }}</div>
-                  </RouterLink>
-                </li>
-              </ul>
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
+              </button>
+
+              <div
+                id="dropdownNavbar"
+                :class="[
+                  'z-10 font-normal bg-white divide-y divide-gray-700 p-5 shadow-sm w-72 dark:bg-gray-700 dark:divide-gray-600',
+                  isOpenIndustri ? '' : 'hidden',
+                ]"
+              >
+                <ul
+                  class="py-2 text-sm text-gray-700 dark:text-gray-400"
+                  aria-labelledby="dropdownNavbarLink"
+                >
+                  <li v-for="industry in industries" :key="industry.name">
+                    <RouterLink
+                      to="/industri"
+                      class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+                      @click="isOpenIndustri = false"
+                    >
+                      <img
+                        class="w-10 h-10"
+                        :src="industry.icon"
+                        :alt="industry.name"
+                      />
+                      <div class="font-semibold">{{ industry.name }}</div>
+                    </RouterLink>
+                  </li>
+                </ul>
+              </div>
             </div>
           </li>
           <li>
