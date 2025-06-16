@@ -19,7 +19,11 @@ const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve({ top: 720, behavior: "smooth" });
+        if (to.name !== "Home") {
+          resolve({ top: 720, behavior: "smooth" });
+        } else {
+          resolve({ top: 0 });
+        }
       }, 0);
     });
   },
